@@ -7,5 +7,4 @@ contextBridge.exposeInMainWorld("pingProvider", {
   sendPing: async () => {
     return await ipcRenderer.invoke('ping:Send');
   },
-  ping: () => 'pong',
 });
