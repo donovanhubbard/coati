@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PacketLoss = ({ responses }) => {
+const PacketLossPanel = ({ responses }) => {
   let packetLoss = 0;
   if(responses && responses.length > 0){
     const numPings = responses.length;
@@ -10,9 +10,9 @@ const PacketLoss = ({ responses }) => {
 
   return (
     <div>
-      <h1>Packet Loss {packetLoss}%</h1>
+      <h3>Packet Loss {packetLoss}%</h3>
     </div>
   )
 };
 
-export default PacketLoss;
+export default PacketLossPanel;

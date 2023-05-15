@@ -9,8 +9,8 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-const sendPing = async () => {
-  return await ping.promise.probe("google.com");
+const sendPing = async (host) => {
+  return await ping.promise.probe(host);
 };
 
 const createWindow = () => {
