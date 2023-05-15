@@ -4,7 +4,7 @@
 import { contextBridge, ipcRenderer } from "electron";
 
 contextBridge.exposeInMainWorld("pingProvider", {
-  sendPing: async () => {
-    return await ipcRenderer.invoke('ping:Send');
+  sendPing: async (host) => {
+    return await ipcRenderer.invoke('ping:Send',host);
   },
 });

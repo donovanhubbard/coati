@@ -9,7 +9,7 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-const sendPing = async (host) => {
+const sendPing = async (event, host) => {
   return await ping.promise.probe(host);
 };
 

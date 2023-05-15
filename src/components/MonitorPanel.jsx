@@ -12,8 +12,6 @@ const MonitorPanel = ({ host, intervalMs, maxPings }) => {
 
     response = {...response, formattedTime: timeString};
 
-    console.log(response);
-
     const newPings =[...pings,response];
 
     if (pings.length >= maxPings) {
