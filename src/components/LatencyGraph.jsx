@@ -11,7 +11,7 @@ import {
   Legend,
 } from 'chart.js';
 
-const LatencyGraph = ({responses}) => {
+const LatencyGraph = ({host, responses}) => {
 
   ChartJS.register(
     CategoryScale,
@@ -54,7 +54,7 @@ const LatencyGraph = ({responses}) => {
     labels: labels,
     datasets: [
       {
-        label: 'google.com',
+        label: host,
         data: dataset,
         borderColor: 'rgba(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)'

@@ -10,7 +10,9 @@ const MonitorPanel = ({ host, intervalMs, maxPings }) => {
     let response = await window.pingProvider.sendPing(host);
     const timeString = new Date(Date.now()).toLocaleTimeString();
 
-    response = {...response, formattedTime: timeString}
+    response = {...response, formattedTime: timeString};
+
+    console.log(response);
 
     const newPings =[...pings,response];
 
@@ -32,7 +34,7 @@ const MonitorPanel = ({ host, intervalMs, maxPings }) => {
   return (
     <div>
       <h1>{host}</h1>
-      <LatencyGraph responses={pings} />
+      <LatencyGraph responses={pings} host={host}/>
       <PacketLossPanel responses={pings}/>
     </div>
   )
