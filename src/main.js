@@ -1,6 +1,6 @@
 // const { app, BrowserWindow } = require('electron');
 // const path = require('path');
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, session } from 'electron';
 import path from 'path';
 import ping from "ping";
 
@@ -12,6 +12,8 @@ if (require('electron-squirrel-startup')) {
 const sendPing = async (event, host) => {
   return await ping.promise.probe(host);
 };
+
+
 
 const createWindow = () => {
   // Create the browser window.
@@ -42,6 +44,15 @@ const createWindow = () => {
 app.whenReady().then(() => {
   ipcMain.handle('ping:Send',sendPing);
   createWindow();
+
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Content-Security-Policy': ['default-src \'self\'']
+      }
+    })
+  })
 
   app.on('activate', () => {
     // On OS X it's common to re-create a window in the app when the
