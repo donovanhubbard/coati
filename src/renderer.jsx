@@ -31,6 +31,11 @@ import ReactDOM from 'react-dom/client';
 
 import App from './App.jsx'
 
+// const React = require('react');
+// const ReactDOM = require('react-dom');
+
+// const App = require('./App.jsx');
+
 const el = document.getElementById('root');
 const root = ReactDOM.createRoot(el);
 

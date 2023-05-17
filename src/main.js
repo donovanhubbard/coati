@@ -1,8 +1,11 @@
-// const { app, BrowserWindow } = require('electron');
-// const path = require('path');
-import { app, BrowserWindow, ipcMain, session } from 'electron';
-import path from 'path';
-import ping from "ping";
+// import { app, BrowserWindow, ipcMain, session } from 'electron';
+// import path from 'path';
+// import ping from "ping";
+const { app, BrowserWindow, ipcMain, session } = require('electron');
+const path = require('path');
+const ping = require('ping');
+const defaultGateway = require('default-gateway');
+// import defaultGateway from 'default-gateway';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -12,6 +15,14 @@ if (require('electron-squirrel-startup')) {
 const sendPing = async (event, host) => {
   return await ping.promise.probe(host);
 };
+
+const getGateway = () => {
+  const { gateway } = defaultGateway.v4.sync();
+  console.log(gateway);
+  return gateway;
+};
+
+
 
 
 
@@ -43,6 +54,7 @@ const createWindow = () => {
 
 app.whenReady().then(() => {
   ipcMain.handle('ping:Send',sendPing);
+  ipcMain.handle('gateway:Get',getGateway);
   createWindow();
 
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
