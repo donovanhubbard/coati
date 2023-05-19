@@ -9,10 +9,6 @@ contextBridge.exposeInMainWorld("pingProvider", {
     return await ipcRenderer.invoke('ping:Send',host);
   },
   getGateway: () => {
-    // const thing = ipcRenderer.invoke('gateway:Get');
-    // console.log('preload',thing);
-    // return thing;
-    // return ipcRenderer.invoke('gateway:Get').then((result) =>  result );
     return ipcRenderer.invoke('gateway:Get');
   }
 });

@@ -18,7 +18,6 @@ const sendPing = async (event, host) => {
 
 const getGateway = () => {
   const { gateway } = defaultGateway.v4.sync();
-  console.log(gateway);
   return gateway;
 };
 
