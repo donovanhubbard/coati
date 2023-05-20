@@ -1,5 +1,7 @@
 module.exports = {
-  packagerConfig: {},
+  packagerConfig: {
+    icon: 'images/coati',
+  },
   rebuildConfig: {},
   makers: [
     {
@@ -9,6 +11,15 @@ module.exports = {
     {
       name: '@electron-forge/maker-zip',
       platforms: ['darwin'],
+      config: {
+        icon: './images/coati.icns',
+      },
+    },
+    {
+      name: '@electron-forge/maker-dmg',
+      config: {
+        icon: './images/coati.icns',
+      },
     },
     {
       name: '@electron-forge/maker-deb',

@@ -1,11 +1,12 @@
 // import { app, BrowserWindow, ipcMain, session } from 'electron';
 // import path from 'path';
 // import ping from "ping";
-const { app, BrowserWindow, ipcMain, session } = require('electron');
+const { app, BrowserWindow, ipcMain, session, Menu } = require('electron');
 const path = require('path');
 const ping = require('ping');
 const defaultGateway = require('default-gateway');
-// import defaultGateway from 'default-gateway';
+
+const isMac = process.platform === 'darwin'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -21,8 +22,38 @@ const getGateway = () => {
   return gateway;
 };
 
+const template = [
+  // { role: 'appMenu' }
+  ...[{
+    label: 'Coati',
+    submenu: [
+      { role: 'about' },
+      { type: 'separator' },
+      { role: 'hide' },
+      { role: 'hideOthers' },
+      { role: 'unhide' },
+      { type: 'separator' },
+      { role: 'quit' }
+    ]
+  },
+  {
+    label: 'File',
+    submenu: [
+      { label: 'Edit Targets' }
+    ]
+  }],
+];
 
+const menu = Menu.buildFromTemplate(template);
+Menu.setApplicationMenu(menu);
 
+app.setAboutPanelOptions({
+  applicationName: "Coati", 
+  applicationVersion: app.getVersion(),
+  credits: ['Donovan Hubbard'],
+  website: 'https://github.com/donovanhubbard/coati',
+  copyright: "(C) 2023 Donovan Hubbard"
+});
 
 
 const createWindow = () => {
@@ -33,6 +64,7 @@ const createWindow = () => {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
+    icon: '/images/coati.png'
   });
 
   // and load the index.html of the app.
