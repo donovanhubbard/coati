@@ -50,7 +50,11 @@ module.exports = {
         renderer: [
           {
             name: 'main_window',
-            config: 'vite.renderer.config.mjs',
+            config: 'vite.renderer.main_window.config.mjs',
+          },
+          {
+            name: 'configure_modal',
+            config: 'vite.renderer.configure_modal.config.mjs',
           },
         ],
       },

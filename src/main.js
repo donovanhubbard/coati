@@ -8,6 +8,17 @@ const defaultGateway = require('default-gateway');
 
 const isMac = process.platform === 'darwin'
 
+let configureModal;
+
+const displayConfigureModal = () => {
+  if (CONFIGURE_MODAL_VITE_DEV_SERVER_URL) {
+    configureModal.loadURL(`${CONFIGURE_MODAL_VITE_DEV_SERVER_URL}/configureModal.html`);
+  } else {
+    configureModal.loadFile(path.join(__dirname, `../renderer/${CONFIGURE_MODAL_VITE_NAME}/configureModal.html`));
+  }
+  configureModal.show();
+};
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -39,7 +50,10 @@ const template = [
   {
     label: 'File',
     submenu: [
-      { label: 'Edit Targets' }
+      { 
+        label: 'Edit Targets', 
+        click: () => {displayConfigureModal()}
+      }
     ]
   }],
 ];
@@ -55,9 +69,15 @@ app.setAboutPanelOptions({
   copyright: "(C) 2023 Donovan Hubbard"
 });
 
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+// Some APIs can only be used after this event occurs.
+// app.on('ready', createWindow);
 
-const createWindow = () => {
-  // Create the browser window.
+app.whenReady().then(() => {
+  ipcMain.handle('ping:Send',sendPing);
+  ipcMain.handle('gateway:Get',getGateway);
+
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
@@ -67,26 +87,27 @@ const createWindow = () => {
     icon: '/images/coati.png'
   });
 
-  // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
   } else {
     mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
   }
 
-  // Open the DevTools.
   mainWindow.webContents.openDevTools();
-};
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-// app.on('ready', createWindow);
+  configureModal = new BrowserWindow({
+    width: 600,
+    hieght: 400,
+    parent: mainWindow, 
+    modal: true, 
+    show: false,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+    },
+    icon: '/images/coati.png'
+  });
 
-app.whenReady().then(() => {
-  ipcMain.handle('ping:Send',sendPing);
-  ipcMain.handle('gateway:Get',getGateway);
-  createWindow();
+
 
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({
@@ -101,7 +122,7 @@ app.whenReady().then(() => {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
+      displayWindow();
     }
   });
 });
