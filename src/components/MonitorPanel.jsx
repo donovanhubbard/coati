@@ -53,7 +53,6 @@ const MonitorPanel = ({maxPings, intervalMs}) => {
 
   return (
     <div>
-      <h1>Coati</h1>
       <LatencyGraph hostObjs={hosts} />
     </div>
   )

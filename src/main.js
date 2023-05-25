@@ -5,6 +5,7 @@ const { app, BrowserWindow, ipcMain, session, Menu } = require('electron');
 const path = require('path');
 const ping = require('ping');
 const defaultGateway = require('default-gateway');
+const isDev = require('electron-is-dev');
 
 const isMac = process.platform === 'darwin'
 
@@ -93,7 +94,9 @@ app.whenReady().then(() => {
     mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
   }
 
-  mainWindow.webContents.openDevTools();
+  if(isDev){
+    mainWindow.webContents.openDevTools();
+  }
 
   configureModal = new BrowserWindow({
     width: 600,
